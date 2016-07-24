@@ -1,5 +1,6 @@
 var client = require('cheerio-httpcli');
 var fs = require('fs');
+var mycron = require('cron').CronJob;
 
 function findTopicid(page,callback){
 	new Promise(function (resolve, reject) {
@@ -73,16 +74,35 @@ getKinkyu(9327,function(json){
 });
 */
 
+/*
 findTopicid(1, function(idary){
 	console.log(idary[0][0] + " " +idary[0][1]);
 	getKinkyu(idary[0][1],function(res){
-    var path = "pso2.json";
-    fs.writeFile(path, JSON.stringify(res, null, '  ') , function (err) {
-      console.log(err);
-    });
+		var path = "pso2.json";
+		fs.writeFile(path, JSON.stringify(res, null, '  ') , function (err) {
+			console.log(err);
+		});
 	})
+});*/
 
+var job = new mycron({
+  cronTime: '00 02 14 * * 3', //毎週水曜日14:02に実行
+  onTick: function() {
+    findTopicid(1, function(idary){
+		console.log(idary[0][0] + " " +idary[0][1]);
+		getKinkyu(idary[0][1],function(res){
+			var path = "pso2.json";
+			fs.writeFile(path, JSON.stringify(res, null, '  ') , function (err) {
+				console.log(err);
+			});
+		});
+	});
+	console.log("i'm working!");
+  },
+  start: true //newした後即時実行するかどうか
+  //timeZone: 'Japan/Tokyo'
 });
+job.start();
 
 /*
 getdata = {
