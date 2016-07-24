@@ -6,13 +6,8 @@ var date_util = require('date-utils');
 function findTopicid(page,callback){
 	new Promise(function (resolve, reject) {
 		client.fetch('http://pso2.jp/players/news/', {mode:"event", page:page}, function (err, $, res) {
-			if(err) reject("pso2サイトおちてる");
-			
-      var dt = new Date();
-      var now = dt.toFormat("YYYY/MM/DD/ HH:MI:SS");
-      console.log(now);
-      
-      var getdata = [now];
+			if(err) reject("pso2サイトおちてる");      
+      		var getdata = [];
 			$("#event dl dd").each(function (idx) {
 				var title = $(this).children("dd a").text();
 				var pageid = $(this).children("dd a").attr("href").slice(6);
@@ -44,7 +39,12 @@ function getKinkyu(id, callback){
 		client.fetch('http://pso2.jp/players/news/', { id: id }, function (err, $, res) {
 			var Topictitle = $('.tabsWrap dl dd').text();
 			console.log("title : "+Topictitle);
-			var getdata = {};
+			
+			var dt = new Date();
+			var now = dt.toFormat("YYYY/MM/DD/ HH:MI:SS");
+			console.log(now);
+
+			var getdata = {"refresh":now};
 
 			$('.tableWrap').each(function (idx) {
 				//date: 予定日
