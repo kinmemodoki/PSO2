@@ -1,10 +1,12 @@
 {
   "name": "pso2",
   "version": "1.0.0",
-  "description": "",
+  "description": "pso2 get kinkyu  schedule",
   "main": "index.js",
   "dependencies": {
-    "cheerio-httpcli": "^0.6.8"
+    "cheerio-httpcli": "^0.6.8",
+    "cron": "^1.1.0",
+    "date-utils": "^1.2.21"
   },
   "devDependencies": {},
   "scripts": {
@@ -14,7 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/kinmemodoki/PSO2.git"
   },
-  "author": "",
+  "author": "kinmemodoki",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/kinmemodoki/PSO2/issues"

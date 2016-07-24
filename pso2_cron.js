@@ -1,12 +1,18 @@
 var client = require('cheerio-httpcli');
 var fs = require('fs');
 var mycron = require('cron').CronJob;
+var date_util = require('date-utils');
 
 function findTopicid(page,callback){
 	new Promise(function (resolve, reject) {
 		client.fetch('http://pso2.jp/players/news/', {mode:"event", page:page}, function (err, $, res) {
 			if(err) reject("pso2サイトおちてる");
-			var getdata = [];
+			
+      var dt = new Date();
+      var now = dt.toFormat("YYYY/MM/DD/ HH:MI:SS");
+      console.log(now);
+      
+      var getdata = [now];
 			$("#event dl dd").each(function (idx) {
 				var title = $(this).children("dd a").text();
 				var pageid = $(this).children("dd a").attr("href").slice(6);
@@ -85,6 +91,7 @@ findTopicid(1, function(idary){
 	})
 });*/
 
+console.log("start work!");
 var job = new mycron({
   cronTime: '00 02 14 * * 3', //毎週水曜日14:02に実行
   onTick: function() {
@@ -103,6 +110,16 @@ var job = new mycron({
   //timeZone: 'Japan/Tokyo'
 });
 job.start();
+
+findTopicid(1, function(idary){
+	console.log(idary[0][0] + " " +idary[0][1]);
+	getKinkyu(idary[0][1],function(res){
+		var path = "pso2.json";
+		fs.writeFile(path, JSON.stringify(res, null, '  ') , function (err) {
+			console.log(err);
+		});
+  });
+});
 
 /*
 getdata = {
