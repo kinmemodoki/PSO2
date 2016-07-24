@@ -1,4 +1,5 @@
 var client = require('cheerio-httpcli');
+var fs = require('fs');
 
 function findTopicid(page,callback){
 	new Promise(function (resolve, reject) {
@@ -75,10 +76,10 @@ getKinkyu(9327,function(json){
 findTopicid(1, function(idary){
 	console.log(idary[0][0] + " " +idary[0][1]);
 	getKinkyu(idary[0][1],function(res){
-		for(var date in res){
-			console.log(date);
-		}
-		
+    var path = "pso2.json";
+    fs.writeFile(path, JSON.stringify(res, null, '  ') , function (err) {
+      console.log(err);
+    });
 	})
 
 });
